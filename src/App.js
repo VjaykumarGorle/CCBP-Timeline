@@ -1,57 +1,61 @@
 import {Component} from 'react'
-import {Route, Switch} from 'react-router-dom'
 
-import Home from './components/Home'
-import NotFound from './components/NotFound'
+import {Route, Switch} from 'react-router-dom'
 import Register from './components/Register'
+import Home from './components/Home'
+
+import NotFound from './components/NotFound'
+
 import RegisterContext from './context/RegisterContext'
 
 import './App.css'
 
+// These are the lists used in the application. You can move them to any component needed.
+
+// Replace your code here
 class App extends Component {
   state = {
-    isRegister: false,
     name: '',
     topic: 'Arts and Culture',
-    registerError: false,
+    isRegistered: false,
+    showError: false,
   }
 
-  updateName = updateName => {
-    this.setState({name: updateName})
+  changeName = name => {
+    this.setState({name})
   }
 
-  updateTopic = updateTopic => {
-    this.setState({topic: updateTopic})
+  changeTopic = topic => {
+    this.setState({topic})
   }
 
-  changeRegistrationStatus = () => {
-    this.setState({isRegister: true})
+  registerName = () => {
+    this.setState({isRegistered: true})
   }
 
-  updateError = response => {
-    this.setState({registerError: response})
+  updateError = () => {
+    this.setState({showError: true})
   }
 
   render() {
-    const {isRegister, name, topic, registerError} = this.state
-
+    const {name, topic, isRegistered, showError} = this.state
     return (
       <RegisterContext.Provider
         value={{
-          isRegister,
           name,
           topic,
-          changeRegistrationStatus: this.changeRegistrationStatus,
-          updateName: this.updateName,
-          updateTopic: this.updateTopic,
-          registerError,
+          isRegistered,
+          showError,
+          changeName: this.changeName,
+          changeTopic: this.changeTopic,
+          registerName: this.registerName,
           updateError: this.updateError,
         }}
       >
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/register" component={Register} />
-          <Route component={NotFound} />
+          <NotFound />
         </Switch>
       </RegisterContext.Provider>
     )

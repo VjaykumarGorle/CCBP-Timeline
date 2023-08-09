@@ -1,13 +1,13 @@
 import React from 'react'
 
 const RegisterContext = React.createContext({
-  isRegistered: false,
-  changeRegistrationStatus: () => {},
   name: '',
-  topic: '',
-  updateName: () => {},
-  updateTopic: () => {},
-  registerError: false,
+  topic: 'Arts and Culture',
+  changeName: () => {},
+  changeTopic: () => {},
+  isRegistered: false,
+  registerName: () => {},
+  showError: false,
   updateError: () => {},
 })
 

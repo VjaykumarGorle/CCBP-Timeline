@@ -1,19 +1,19 @@
-import Navbar from '../Navbar'
+import Header from '../Header'
+
 import RegisterContext from '../../context/RegisterContext'
 
 import {
   RegisterContainer,
-  FormContainer,
-  FormImg,
+  RegisterImg,
   Form,
-  FormHead,
+  RegisterHeading,
+  InputContainer,
   Label,
   Input,
   Select,
-  Options,
-  FormBtn,
-  FormErr,
-} from './styledComponents'
+  RegisterButton,
+  ErrorMsg,
+} from './style'
 
 const topicsList = [
   {
@@ -44,70 +44,74 @@ const Register = props => (
       const {
         name,
         topic,
-        updateName,
-        updateTopic,
-        changeRegistrationStatus,
+        changeName,
+        changeTopic,
+        showError,
+        registerName,
         updateError,
-        registerError,
       } = value
 
-      const submitForm = event => {
+      const submitRegistration = event => {
         event.preventDefault()
-        changeRegistrationStatus()
 
         if (name !== '' && topic !== '') {
           const {history} = props
           history.replace('/')
+          registerName()
         } else {
-          updateError(true)
+          updateError()
         }
       }
 
       const onChangeName = event => {
-        updateName(event.target.value)
+        changeName(event.target.value)
       }
 
       const onChangeTopic = event => {
-        updateTopic(event.target.value)
+        changeTopic(event.target.value)
       }
 
       return (
-        <>
-          <Navbar />
-          <RegisterContainer>
-            <FormContainer>
-              <FormImg
+        <div>
+          <Header />
+          <div>
+            <RegisterContainer>
+              <RegisterImg
                 src="https://assets.ccbp.in/frontend/react-js/meetup/website-register-img.png"
                 alt="website register"
               />
-              <Form onClick={submitForm}>
-                <FormHead>Let us Join</FormHead>
-                <Label htmlFor="name">NAME</Label>
-                <Input
-                  type="text"
-                  value={name}
-                  onChange={onChangeName}
-                  placeholder="Your name"
-                  id="name"
-                />
-                <Label htmlFor="topic">TOPICS</Label>
-                <Select value={topic} id="topic" onChange={onChangeTopic}>
-                  {topicsList.map(each => (
-                    <Options key={each.id} value={each.id}>
-                      {each.displayText}
-                    </Options>
-                  ))}
-                </Select>
-
-                <FormBtn type="submit">Register Now</FormBtn>
-
-                {registerError ? (
-                  <FormErr>please enter your name?</FormErr>
-                ) : null}
+              <Form onSubmit={submitRegistration}>
+                <RegisterHeading>Let us join</RegisterHeading>
+                <InputContainer>
+                  <Label htmlFor="name">NAME</Label>
+                  <Input
+                    id="name"
+                    value={name}
+                    type="text"
+                    onChange={onChangeName}
+                    placeholder="Your name"
+                  />
+                </InputContainer>
+                <InputContainer>
+                  <Label htmlFor="topic">Topics</Label>
+                  <Select id="topic" value={topic} onChange={onChangeTopic}>
+                    {topicsList.map(each => (
+                      <option value={each.id} key={each.id}>
+                        {each.displayText}
+                      </option>
+                    ))}
+                  </Select>
+                </InputContainer>
+                <RegisterButton type="submit">Register Now</RegisterButton>
+                {showError === true ? (
+                  <ErrorMsg>Please enter your name</ErrorMsg>
+                ) : (
+                  ''
+                )}
               </Form>
-            </FormContainer>
-          </RegisterContainer>
-        </>
+            </RegisterContainer>
+          </div>
+        </div>
       )
     }}
   </RegisterContext.Consumer>
